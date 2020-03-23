@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var myImage = (function () {
+            var imgNode = document.createElement('img')
+            document.body.appendChild(imgNode)
+            return {
+                setSrc: function (src) {
+                    imgNode.src = src
+                }
+            }
+        })()
+        //如果图片很大或者网速很慢，这玩意就加载的很慢，需要loading
+        myImage.setSrc('https://pic.ibaotu.com/01/34/46/37e888piCp9c.jpg-0.jpg!ww7002')
+    </script>
+</body>
+
+</html>

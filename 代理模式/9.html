@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //虚拟代理在惰性加载中的应用--只有当用到的时候才加载
+
+        var miniConsole = (function () {
+            var cache = []
+
+            var handler = function (e) {
+                if (e.keyCode === 13) {
+                    var script = document.createElement('script')
+                    script.onload = function () {
+                        for (var i = 0, fn; fn = cache[i++];) {
+                            fn()
+                        }
+                    }
+                    script.src = "./miniConsole.js"
+                    document.getElementsByTagName('head')[0].appendChild(script)
+                    document.body.removeEventListener('keydown', handler)
+                }
+            }
+            document.body.addEventListener('keydown', handler, false)
+
+            return {
+                log: function () {
+                    var args = arguments
+                    cache.push(function () {
+                        miniConsole.log.apply(miniConsole, args)
+                    })
+                }
+            }
+
+        })()
+
+
+        miniConsole.log(1, 4)
+        miniConsole.log(2)
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

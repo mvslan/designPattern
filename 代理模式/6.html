@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 这里使用了代理的预加载，我们来对比下，不用代理的情况->7.html
+        var myImage = (function () {
+            var imgNode = document.createElement('img')
+            document.body.appendChild(imgNode)
+
+            return {
+                setSrc: function (src) {
+                    imgNode.src = src
+                }
+            }
+        })()
+        var proxyImage = (function () {
+            //创建代理图片
+            var img = new Image
+            img.onload = function () {
+                myImage.setSrc(this.src)
+            }
+            return {
+                setSrc: function (src) {
+                    myImage.setSrc('imgs/loading.jpeg')
+                    img.src = src
+                }
+            }
+        })()
+        proxyImage.setSrc('imgs/2.jpg')
+
+    </script>
+</body>
+
+</html>

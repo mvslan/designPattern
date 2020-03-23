@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="http://test.com/register" method='post' id="registerForm">
+        请输入用户名：<input type="text" name="userName" />
+        请输入密码：<input type="text" name="passWord" />
+        请输入手机号：<input type="text" name="phoneNumber" />
+        <button>提交</button>
+    </form>
+
+    <script>
+        // 这里主要是为了在一个输入框中匹配多个验证规则；实际上之前的策略可以实现，多写几次就好了
+        /*  策略对象  */
+        var strategies = {
+            isNonEmpty: function (value, errorMsg) {
+                if (value === '') {
+                    console.log(errorMsg)
+
+                    return errorMsg
+                }
+            },
+            minLength: function (value, length, errorMsg) {
+                if (value.length < length) {
+                    return errorMsg
+                }
+            },
+            isMobile: function (value, errorMsg) {
+                if (!/(^1[3|5|8][0-9]{9}$)/.test(value)) {
+                    return errorMsg
+                }
+            },
+        }
+
+
+        /* Validator类 */
+        var Validator = function () {
+            this.cache = []
+        }
+        // add中保存需要处理的函数
+        Validator.prototype.add = function (dom, rules) {
+            var self = this
+            for (let i = 0, rule; rule = rules[i]; i++) {
+                (function (rule) {
+                    self.cache.push(function () {
+                        var startegyArr = rule.startegy.split(':')
+                        var startegy = startegyArr.shift()
+                        startegyArr.unshift(dom.value)
+                        startegyArr.push(rule.errorMsg)
+
+                        return strategies[startegy].apply(dom, startegyArr)
+                    })
+                })(rule)
+
+            }
+        }
+        // 上面写法可以改写成这个
+        // Validator.prototype.add = function (dom, rules) {
+        //     var self = this
+        //     for (let i = 0; i < rules.length; i++) {
+        //         self.cache.push(function () {
+        //             var rule = rules[i]
+        //             var startegyArr = rule.startegy.split(':')
+        //             var startegy = startegyArr.shift()
+        //             startegyArr.unshift(dom.value)
+        //             startegyArr.push(rule.errorMsg)
+
+        //             return strategies[startegy].apply(dom, startegyArr)
+        //         })
+        //     }
+        // }
+        Validator.prototype.start = function () {
+            for (var i = 0, validatorFunc; validatorFunc = this.cache[i++];) {
+                var errorMsg = validatorFunc()
+                if (errorMsg) {
+                    return errorMsg
+                }
+            }
+        }
+
+        /* 用户代码 */
+        var registerForm = document.getElementById('registerForm')
+
+        var validataFunc = function () {
+            var validator = new Validator()
+            validator.add(registerForm.userName, [{
+                startegy: 'isNonEmpty',
+                errorMsg: '用户名不能为空',
+            }, {
+                startegy: 'minLength:3',
+                errorMsg: '密码长度不能小于3位',
+            }])
+            validator.add(registerForm.passWord, [{
+                startegy: 'minLength:6',
+                errorMsg: '密码长度不能小于6位',
+            }])
+            validator.add(registerForm.phoneNumber, [{
+                startegy: 'isMobile',
+                errorMsg: '手机号码格式不正确',
+            }])
+
+            var errorMsg = validator.start()
+            return errorMsg
+        }
+
+
+        registerForm.onsubmit = function () {
+            var errorMsg = validataFunc()
+            if (errorMsg) {
+                alert(errorMsg)
+                return false
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

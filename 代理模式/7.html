@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //这玩意不符合单一职责原则，所以还是6.html好
+        var myImage = (function () {
+            var imgNode = document.createElement('img')
+            document.body.appendChild(imgNode)
+
+            var img = new Image
+
+            return {
+                setSrc: function (src) {
+                    imgNode.src = 'imgs/loading.jpeg'
+                    img.src = src
+                    img.onload = function () {
+                        imgNode.src = src
+                    }
+                }
+            }
+        })()
+
+        myImage.setSrc('imgs/2.jpg')
+
+    </script>
+</body>
+
+</html>

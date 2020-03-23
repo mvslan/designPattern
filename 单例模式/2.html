@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="loginBtn">登录</button>
+    <script>
+        /*
+        var loginLayer = (function () {
+            var div = document.createElement('div')
+            div.innerHTML = '我要登录，不给就送'
+            div.style.display = 'none'
+            document.body.appendChild(div)
+            return div
+        })()
+        document.getElementById('loginBtn').onclick = function () {
+            loginLayer.style.display = 'block'
+        }
+        */
+        /*
+         // 优化：只有在需要的时候才创建节点
+         var createLoginLayer = function () {
+             var div = document.createElement('div')
+             div.innerHTML = '我要登录，不给就送'
+             div.style.display = 'none'
+             document.body.appendChild(div)
+             return div
+         }
+         document.getElementById('loginBtn').onclick = function () {
+             var loginLayer = createLoginLayer()
+             loginLayer.style.display = 'block'
+         }
+         */
+        /*
+        // 频繁点击和关闭，会多次创建div，继续优化
+        var createLoginLayer = (function () {
+            var div
+            return function () {
+                if (!div) {
+                    div = document.createElement('div')
+                    div.innerHTML = '我要登录，不给就送'
+                    div.style.display = 'none'
+                    document.body.appendChild(div)
+                }
+                return div
+            }
+        })()
+        document.getElementById('loginBtn').onclick = function () {
+            var loginLayer = createLoginLayer()
+            loginLayer.style.display = 'block'
+        }
+        */
+        // 虽然看起来不错，但是createLoginLayer中包含了创建对象和管理单例的逻辑，违反了单一职责原则，我们应该将其分离
+        // 完美，cool！
+        var getSingle = function (fn) {
+            var result
+            return function () {
+                return result || (result = fn.apply(this, arguments))
+            }
+        }
+        var createLoginLayer = function () {
+            var div = document.createElement('div')
+            div.innerHTML = '我要登录，不给就送'
+            div.style.display = 'none'
+            document.body.appendChild(div)
+            return div
+        }
+        var createSingleLoginLayer = getSingle(createLoginLayer)
+        document.getElementById('loginBtn').onclick = function () {
+            var loginLayer = createSingleLoginLayer()
+            loginLayer.style.display = 'block'
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>
