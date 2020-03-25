@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="button1">刷新</button>
+    <button id="button2">添加</button>
+    <button id="button3">删除</button>
+    <script>
+        var button1 = document.getElementById('button1')
+        var button2 = document.getElementById('button2')
+        var button3 = document.getElementById('button3')
+
+        var bindClick = function (button, func) {
+            button.onclick = func
+        }
+
+        var MenuBar = {
+            refresh: function () {
+                console.log('刷新页面')
+            }
+        }
+        var SubMenu = {
+            add: function () {
+                console.log('增加子菜单')
+            },
+            del: function () {
+                console.log('删除子菜单')
+            }
+        }
+
+        bindClick(button1, MenuBar.refresh)
+        bindClick(button2, SubMenu.add)
+        bindClick(button3, SubMenu.del)
+
+
+    </script>
+</body>
+
+</html>
