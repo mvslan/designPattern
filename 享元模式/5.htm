@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    //对象池
+    // var objFactory = function (createObjfn) {
+    //   var objPool = []
+
+    //   return {
+    //     create: function () {
+    //       console.log(objPool)
+
+    //       var obj = objPool.length === 0 ? createObjfn.apply(this, arguments) : objPool.shift()
+    //       return obj
+    //     },
+    //     recover: function (obj) {
+    //       objPool.push(obj)
+    //     }
+    //   }
+    // }
+
+    // var iframeFactory = objFactory(function () {
+    //   var iframe = document.createElement('iframe')
+    //   document.body.appendChild(iframe)
+
+    //   iframe.onload = function () {
+    //     iframe.onload = null;
+    //     iframeFactory.recover()
+    //   }
+
+    //   return iframe
+
+    // })
+    //好像没啥区别
+    function create() {
+      var iframe = document.createElement('iframe')
+      document.body.appendChild(iframe)
+
+      iframe.onload = function () {
+        iframe.onload = null;
+        iframeFactory.recover()
+      }
+
+      return iframe
+    }
+
+    var iframeFactory = {
+      create
+    }
+
+    var iframe1 = iframeFactory.create()
+    iframe1.src = 'http://www.baidu.com'
+
+    var iframe2 = iframeFactory.create()
+    iframe2.src = 'http://www.QQ.com'
+
+    var iframe3 = iframeFactory.create()
+    iframe3.src = 'http://www.163.com'
+
+
+
+  </script>
+</body>
+
+</html>

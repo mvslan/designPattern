@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 一个简单的开关灯状态
+     */
+
+    var Light = function () {
+      this.state = 'off'
+      this.button = null
+    }
+
+    Light.prototype.init = function () {
+      var button = document.createElement('button')
+      self = this
+
+      button.innerHTML = '开关'
+      this.button = document.body.appendChild(button)
+      this.button.onclick = function () {
+        self.buttonWasPressed()
+      }
+    }
+
+    Light.prototype.buttonWasPressed = function () {
+      if (this.state === 'off') {
+        console.log('开灯')
+        this.state = 'on'
+      } else {
+        console.log('关灯')
+        this.state = 'off'
+      }
+    }
+
+    var light = new Light()
+    light.init()
+
+
+    // 增加功能：如果需要改变光亮，关灯->弱光->强光，该怎么办呢？
+
+    Light.prototype.buttonWasPressed = function () {
+      if (this.state === 'off') {
+        console.log('弱光')
+        this.state = 'weakLight'
+      } else if (this.state === 'weakLight') {
+        console.log('强光')
+        this.state = 'strongLight'
+      } else if (this.state === 'strongLight') {
+        console.log('关灯')
+        this.state = 'off'
+      }
+    }
+
+    /*
+      缺点：
+      1，buttonWasPressed违反 开放-封闭 原则，每次新增或修改light的状态都要改动代码，且代码难以维护
+      2，代码逻辑封装在buttonWasPressed中，light状态增加，buttonWasPressed的代码也会急剧膨胀
+      3，状态切换不明显，只在state上体现出来，很容易漏掉
+
+    */
+
+
+
+  </script>
+</body>
+
+</html>

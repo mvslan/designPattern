@@ -19,17 +19,22 @@ console.log(a === b)
 */
 //做一些修改
 var Singleton = function (name) {
-    this.name = name
+  this.name = name
 }
 Singleton.prototype.getName = function () {
-    console.log(this.name)
+  console.log(this.name)
 }
 Singleton.getInstance = (function () {
-    var instance = null
-    return function (name) {
-        if (!instance) {
-            instance = new Singleton(name)
-        }
-        return instance
+  var instance = null
+  return function (name) {
+    if (!instance) {
+      instance = new Singleton(name)
     }
+    return instance
+  }
 })()
+
+//所谓单例模式，就是只有一个对象实例
+var a = Singleton.getInstance('a')
+var b = Singleton.getInstance('b')
+console.log(a === b)
