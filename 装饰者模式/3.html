@@ -15,7 +15,7 @@
      * 装饰者模式和代理模式的区别
      * 装饰者可以添加很多不同的东西，有点按需加载的意思
      * 代理只是专门处理一件事，需求一开始就是明确的
-     * /
+     */
 
     Function.prototype.before = function (beforeFn) {
       var _self = this
@@ -39,24 +39,20 @@
     // var _getElementById = document.getElementById
 
     // document.getElementById = function (id) {
-    //   console.log(22)
-    //这句话有问题哦，需要修改
+    //   //这句话有问题哦，需要修改
     //   return _getElementById
     // }
 
-    // var button = document.getElementById('button')
-    // console.log(button)
 
-    // document.getElementById = document.getElementById.before(function () {
-    //   console.log('before')
-    // })
-    // var button = document.getElementById('button')
-    // console.log(button)
-
-    window.alert = window.alert.before(function () {
-      console.log(1)
+    document.getElementById = document.getElementById.before(function () {
+      console.log('before')
     })
-    alert(2)
+    var button = document.getElementById('button')
+
+    // window.alert = window.alert.before(function () {
+    //   console.log(1)
+    // })
+    // alert(2)
 
 
   </script>

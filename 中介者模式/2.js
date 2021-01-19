@@ -37,7 +37,6 @@ Player.prototype.die = function () {
       enemy.win()
     }
   }
-
 }
 
 var playerFactory = function (name, teamColor) {

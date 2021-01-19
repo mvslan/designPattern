@@ -6,7 +6,6 @@ Function.prototype.before = function (beforeFn) {
   return function () {
     //保证this不被劫持
     beforeFn.apply(this, arguments)
-
     return _self.apply(this, arguments)
   }
 }
